@@ -1,15 +1,22 @@
 
 
 function sortByFreq() {
-  chrome.bookmarks.getChildren(bookmarkBar.Id, sort(
+  var sortedArray = chrome.bookmarks.getChildren(bookmarkBar.Id, sort(
     function(a,b) {
       return extractVisits(a) - extractVisits (b);
     }));
+
+  for(i = 0; i < sortedArray.length; i++)
+    {
+     chrome.bookmarks.move(sortedArray[i].id, {'parentId' = bookmarkBarId})
+    }
+	  
+
 }
 
 
 function extractVisits(myNode) {  // BookmarkTreeNode
-  chrome.history.search({'text': myNode.url}, countVisits);
+  return chrome.history.search({'text': myNode.url}, countVisits);
 }
   
 function countVisits(vArray) {
@@ -19,6 +26,6 @@ function countVisits(vArray) {
     }
   return vSum;
 }
-document.addEventListener('DOMContentLoaded', function () {
- sortByFreq();
-});
+
+document.addEventListener('DOMContentLoaded', function(){
+ sortByFreq(); } );
